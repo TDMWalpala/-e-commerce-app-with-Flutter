@@ -1,17 +1,23 @@
-console.log("hello");
 const express = require('express');
-const app = express(); // Create an instance of the Express application
+const app = express();
+const db = require('./database/db');
 
-const PORT = 3000;
+const authRouter = require('./router/auth');
 
-app.get("/",(req,res)=>{
-    res.json({name:"Tharindu"});
-})
+app.use(express.json());
+app.use(authRouter);
 
-app.get("/hello", (req, res) => {
-    res.json({hi:"Hello-world"});
-});
+const PORT = 4000; // Change the port number to an available port
 
-app.listen(PORT, "0.0.0.0", () => {
-    console.log(`connected at port ${PORT}`);
-});
+// Check if the database is connected
+db.connect()
+  .then(() => {
+    console.log('Database connected');
+    // Start the server after the database connection is established
+    app.listen(PORT, () => {
+      console.log(`Connected at port ${PORT}`);
+    });
+  })
+  .catch((error) => {
+    console.error('Error connecting to the database:', error);
+  });
