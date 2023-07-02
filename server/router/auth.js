@@ -4,16 +4,18 @@ const User = require('../models/user');
 const bcrypt = require('bcryptjs');
 const validation = require('../validation/validation');
 
-authRouter.post('/api/signup',validation.validateInput, validation.validate, async (req, res) => {
+
+authRouter.post('/api/signup', validation.validateInput, validation.validate, async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password } = JSON.parse(req.body);
+
     const existingUser = await User.findOneByEmail(email);
     if (existingUser) {
       return res.status(400).json({ msg: 'User already exists!' });
     }
-    const hashPassword =  await bcrypt.hash(password,8);
+    const hashPassword = await bcrypt.hash(password, 8);
     await User.createUser(name, email, hashPassword);
-    res.json({ success: true });
+    res.json({ success: req.body });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

@@ -4,7 +4,7 @@ const db = require('./database/db');
 
 const authRouter = require('./router/auth');
 
-app.use(express.json());
+app.use(express.json({ limit: '10mb', extended: true, strict: false }));
 app.use(authRouter);
 
 const PORT = 4000; // Change the port number to an available port
