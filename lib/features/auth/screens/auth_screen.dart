@@ -33,15 +33,21 @@ class _AuthScreenState extends State<AuthScreen> {
   }
 
   void signUpUser() {
-    print(_emailController);
-    print(_passwordController);
-    print(_nameController);
     authService.signUpUser(
         context: context,
         email: _emailController.text,
         password: _passwordController.text,
         name: _nameController.text);
   }
+  void signInUser() {
+    authService.signInUser(
+        context: context,
+        email: _emailController.text,
+        password: _passwordController.text,
+        );
+  }
+
+  
 
   @override
   Widget build(BuildContext context) {
@@ -80,67 +86,86 @@ class _AuthScreenState extends State<AuthScreen> {
                 ),
               ),
               if (_auth == Auth.signup)
-  Container(
-    padding: const EdgeInsets.all(8),
-    color: GlobalVariables.backgroundColor,
-    child: Form(
-      key: _signUpFormKey,
-      child: Column(
-        children: [
-          CustomTextField(
-            controller: _emailController,
-            hinText: 'Email',
-          ),
-          const Gap(10),
-          CustomTextField(
-            controller: _nameController,
-            hinText: 'Name',
-          ),
-          const Gap(10),
-          CustomTextField(
-            controller: _passwordController,
-            hinText: 'Password',
-          ),
-          const Gap(10),
-          CustomButton(
-              text: 'SignUp',
-              onTap: () {
-                if (_signUpFormKey.currentState!.validate()) {
-                  signUpUser();
-                }
-                print('signup');
-              }),
-        ],
-      ),
-    ),
-  ),
-if (_auth == Auth.signin)
-  Container(
-    padding: const EdgeInsets.all(8),
-    color: GlobalVariables.backgroundColor,
-    child: Form(
-      key: _signInFormKey,
-      child: Column(
-        children: [
-          CustomTextField(
-            controller: _emailController,
-            hinText: 'Email',
-          ),
-          const Gap(10),
-          CustomTextField(
-            controller: _passwordController,
-            hinText: 'Password',
-          ),
-          const Gap(10),
-          CustomButton(
-              text: 'SignIn',
-              onTap: () {
-                print('signIn');
-              }),
-        ],
-      ),
-    ),
-  ),
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  color: GlobalVariables.backgroundColor,
+                  child: Form(
+                    key: _signUpFormKey,
+                    child: Column(
+                      children: [
+                        CustomTextField(
+                          controller: _emailController,
+                          hinText: 'Email',
+                        ),
+                        const Gap(10),
+                        CustomTextField(
+                          controller: _nameController,
+                          hinText: 'Name',
+                        ),
+                        const Gap(10),
+                        CustomTextField(
+                          controller: _passwordController,
+                          hinText: 'Password',
+                        ),
+                        const Gap(10),                                                                    
+                        CustomButton(
+                            text: 'SignUp',
+                            onTap: () {
+                              if (_signUpFormKey.currentState!.validate()) {
+                                signUpUser();
+                              }
+                              print('signup');
+                            }),
+                      ],
+                    ),
+                  ),
+                ),
+                ListTile(
+                title: const Text(
+                  'Log-In',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                leading: Radio(
+                  activeColor: GlobalVariables.secondaryColor,
+                  value: Auth.signin,
+                  groupValue: _auth,
+                  onChanged: (Auth? val) {
+                    setState(() {
+                      _auth = val!;
+                    });
+                  },
+                ),
+              ),
+              if (_auth == Auth.signin)
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  color: GlobalVariables.backgroundColor,
+                  child: Form(
+                    key: _signInFormKey,
+                    child: Column(
+                      children: [
+                        CustomTextField(
+                          controller: _emailController,
+                          hinText: 'Email',
+                        ),
+                        const Gap(10),
+                        CustomTextField(
+                          controller: _passwordController,
+                          hinText: 'Password',
+                        ),
+                        const Gap(10),
+                        CustomButton(
+                            text: 'SignIn',
+                            onTap: () {
+                               if (_signInFormKey.currentState!.validate()) {
+                                signInUser();
+                              }
+                            }),
+                      ],
+                    ),
+                  ),
+                  
+                ),
 
             ],
           ),

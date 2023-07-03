@@ -20,10 +20,12 @@ class AuthService {
   }) async {
     try {
       User user = User(
-        // id: '',
+        id: '',
         name: name,
         email: email,
         password: password,
+        token: '',
+        type: ''
       );
 
       final String userJson = jsonEncode(user); // Serialize user to JSON string
@@ -38,6 +40,32 @@ class AuthService {
       print("hello");
       print(userJson);
 
+      httpErrorHandle(
+        response: res,
+        context: context,
+        onSuccess: () {
+          showSnackBar(context, 'Account has been created');
+        },
+      );
+    } catch (err) {
+      showSnackBar(context, err.toString());
+    }
+  }
+
+  void signInUser({
+    required BuildContext context,
+    required String email,
+    required String password,
+  }) async {
+    try {
+      http.Response res = await http.post(
+        Uri.parse('$uri/api/signin'),
+        body: jsonEncode({"email": email, "password": password}),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8', // Fix typo here
+        },
+      );
+      print(res.body);
       httpErrorHandle(
         response: res,
         context: context,
