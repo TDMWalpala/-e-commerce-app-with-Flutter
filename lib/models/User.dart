@@ -31,18 +31,21 @@ class User {
     };
   }
 
-    factory User.fromMap(Map<String, dynamic> map) {
+  factory User.fromMap(Map<String, dynamic> map) {
     return User(
-      id: map['id'],
-      name: map['name'].toString(),
-      email: map['email'].toString(),
-      password: map['password'].toString(),
-      token: map['token'].toString(),
-      type: map['type'].toString(),
+      id: map['id'] ?? 0,
+      name: map['name'].toString() ?? '',
+      email: map['email'].toString() ?? '',
+      password: map['password'].toString() ?? '',
+      token: map['token'].toString() ?? '',
+      type: map['type'].toString() ?? '',
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory User.fromJson(String source) => User.fromMap(json.decode(source));
+  factory User.fromJson(String source) {
+    Map<String, dynamic> map = json.decode(source);
+    return User.fromMap(map);
+  }
 }

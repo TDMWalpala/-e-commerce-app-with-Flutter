@@ -10,6 +10,15 @@ const User = {
       throw new Error('Error finding user:', error);
     }
   },
+  findOneById: async (id) => {
+    try {
+      const query = 'SELECT * FROM users1 WHERE id = $1';
+      const user = await db.oneOrNone(query, [id]);
+      return user;
+    } catch (error) {
+      throw new Error('Error finding user:', error);
+    }
+  },
   createUser: async (name, email, password) => {
     try {
       const query = 'INSERT INTO users1(name, email, password) VALUES($1, $2, $3)';
